@@ -12,7 +12,7 @@
         <exec.mainClass>com.mycompany.e.reducebaru.EReduceBaru</exec.mainClass>
     </properties>
     
-    <dependencies>
+<dependencies>
             
         <dependency>
             <groupId>net.sf.jasperreports</groupId> 

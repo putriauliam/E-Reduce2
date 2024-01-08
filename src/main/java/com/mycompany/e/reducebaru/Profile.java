@@ -23,6 +23,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author user
@@ -37,7 +39,40 @@ private String userEmail;
     public Profile(String email) {
         this.userEmail = email;
         initComponents();
-        
+        initDataFromDatabase(email);
+    }
+    
+    public class DatabaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/java_users_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+}
+        private void initDataFromDatabase(String email) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String query = "SELECT name, alamat, no_hp, jeniskelamin FROM user WHERE email = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, email);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        String name = resultSet.getString("name");
+                        String alamat = resultSet.getString("alamat");
+                        String no_hp = resultSet.getString("no_hp");
+                        String jeniskelamin = resultSet.getString("jeniskelamin");
+
+                        setUser(name);
+                        setAlamat(alamat);
+                        setNohp(no_hp);
+                        setJk(jeniskelamin);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public void setUserEmail(String email) {
@@ -361,14 +396,21 @@ private String userEmail;
 
     private void CategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CategoryActionPerformed
         // TODO add your handling code here:
-        Kategori kategoriFrame = new Kategori();
-        kategoriFrame.setVisible(true);
-        kategoriFrame.pack();
-        kategoriFrame.setLocationRelativeTo(null);
-        dispose();
+    Kategori KategoriFrame = new Kategori(userEmail);
+    KategoriFrame.setVisible(true);
+    KategoriFrame.pack();
+    KategoriFrame.setLocationRelativeTo(null);
+    
+    // Menghapus ikon dari tombol jButton1
+    jButton1.setIcon(null);
+    
+    dispose();
+        
+
     }//GEN-LAST:event_CategoryActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
         try{
             String reportPath = System.getProperty("user.dir") + File.separator + "report";
             String path = reportPath + File.separator + "DataUser.jrxml";
