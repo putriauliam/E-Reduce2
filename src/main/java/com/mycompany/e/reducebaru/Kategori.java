@@ -3,35 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.e.reducebaru;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author ASUS
  */
 public class Kategori extends javax.swing.JFrame {
-private String userEmail;
-    private javax.swing.JTextField txtNama;
-    private javax.swing.JTextField txtAlamat;
-    private javax.swing.JTextField txtNohp;
-    private javax.swing.JComboBox<String> txtJeniskelamin;
+    private String userEmail;
+    
+    
 
-    public Kategori() {
+    public Kategori(String email) {
         initComponents();
-    }
-    
-    
+        this.userEmail = email;
 
-    public class DatabaseConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/java_users_db";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
-}
+
+    
     
 
     /**
@@ -45,11 +40,7 @@ private String userEmail;
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -64,34 +55,9 @@ private String userEmail;
 
         jPanel2.setBackground(new java.awt.Color(51, 153, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("E-REDUCE");
-
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Kategori Sampah Elektronik");
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lampuenggal.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/kulkasnewpisan.png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/laptop_baro.png"))); // NOI18N
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Layar dan Monitor");
@@ -120,45 +86,25 @@ private String userEmail;
                         .addComponent(jLabel2))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton3)
-                                .addGap(26, 26, 26)
-                                .addComponent(jButton2)
-                                .addGap(26, 26, 26)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(kembalikeprofile)
-                                .addGap(139, 139, 139)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(44, Short.MAX_VALUE))
+                        .addComponent(kembalikeprofile)))
+                .addContainerGap(284, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addComponent(jLabel3)
                 .addGap(127, 127, 127)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addGap(106, 106, 106))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(kembalikeprofile)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(20, 20, 20)
+                .addComponent(kembalikeprofile)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel2)
-                .addGap(52, 52, 52)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(266, 266, 266)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
@@ -190,97 +136,18 @@ private String userEmail;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        DetailMonitor detailMonitorFrame = new DetailMonitor();
-        detailMonitorFrame.setVisible(true);
-        detailMonitorFrame.pack();
-        detailMonitorFrame.setLocationRelativeTo(null);
-        dispose();
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        DetailPertukaranSuhu detailPertukaranSuhuFrame = new DetailPertukaranSuhu();
-        detailPertukaranSuhuFrame.setVisible(true);
-        detailPertukaranSuhuFrame.pack();
-        detailPertukaranSuhuFrame.setLocationRelativeTo(null);
-        dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        DetailLampu detailLampuFrame = new DetailLampu();
-        detailLampuFrame.setVisible(true);
-        detailLampuFrame.pack();
-        detailLampuFrame.setLocationRelativeTo(null);
-        dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void kembalikeprofileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kembalikeprofileActionPerformed
-        // TODO add your handling code here:
-        Profile profileFrame = new Profile(userEmail);
-        profileFrame.setUser(txtNama.getText());
-        profileFrame.setAlamat(txtAlamat.getText());
-        profileFrame.setNohp(txtNohp.getText());
-        profileFrame.setJk(txtJeniskelamin.getSelectedItem().toString());
+    Profile profileFrame = new Profile(userEmail);
+    profileFrame.setVisible(true);
+    profileFrame.pack();
+    profileFrame.setLocationRelativeTo(null);
 
-        profileFrame.setVisible(true);
-        profileFrame.pack();
-        profileFrame.setLocationRelativeTo(null);
-        dispose();
+    // Tutup frame Kategori
+    dispose();
     }//GEN-LAST:event_kembalikeprofileActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-        java.util.logging.Logger.getLogger(Kategori.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Kategori.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Kategori.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Kategori.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Kategori.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Kategori().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
