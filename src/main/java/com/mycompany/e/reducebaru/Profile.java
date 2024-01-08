@@ -370,19 +370,13 @@ private String userEmail;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try{
+            String reportPath = System.getProperty("user.dir") + File.separator + "report";
+            String path = reportPath + File.separator + "DataUser.jrxml";
+        JasperReport jasperReport = JasperCompileManager.compileReport(path);
             
-        String reportPath = "src/report/DataUser.jasper";
-        
-       
-        String url = "jdbc:mysql://localhost:3306/java_users_db";  // ]
-        String username = "root";  
-        String password = "";  
-        
-        Connection con = DriverManager.getConnection(url, username, password);
-        
             Map<String, Object> parameters = new HashMap<>();
             
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, parameters, con);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, MySqlConnection.getInstance().getConnection());
 
             
             File outDir = new File (reportPath);
@@ -393,9 +387,7 @@ private String userEmail;
 
         }catch(JRException e) {
             e.printStackTrace();
-         // Menggabungkan pesan kesalahan dengan e.getMessage()
-    } catch (SQLException ex) {
-        Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
+        
     }    }//GEN-LAST:event_jButton1ActionPerformed
 
     
