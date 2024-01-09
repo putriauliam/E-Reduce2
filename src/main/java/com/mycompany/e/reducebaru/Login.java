@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -204,7 +205,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_passwordActionPerformed
 
     private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
-        String name, Email, Password, query, passDb = null, namef = null, alamat = null, jeniskelamin = null, no_hp = null;
+        String Email, Password, query, hashedPassword = null, name = null, alamat = null, jeniskelamin = null, no_hp = null;
         String SUrl, SUser, SPass;
         SUrl = "jdbc:MySQL://localhost:3306/java_users_db";
         SUser = "root";
@@ -227,17 +228,17 @@ public class Login extends javax.swing.JFrame {
                 ResultSet rs = st.executeQuery(query);
 
                 while (rs.next()) {
-                    passDb = rs.getString("password");
-                    namef = rs.getString("name");
+                    hashedPassword = rs.getString("password");
+                    name = rs.getString("name");
                     alamat = rs.getString("alamat");
                     jeniskelamin = rs.getString("jeniskelamin");
                     no_hp = rs.getString("no_hp");
                     notFound = 1;
                 }
 
-                if (notFound == 1 && Password.equals(passDb)) {
+                if (notFound == 1 && BCrypt.checkpw(Password, hashedPassword)) {
                     Profile ProfileFrame = new Profile(Email);
-                    ProfileFrame.setUser(namef);
+                    ProfileFrame.setUser(name);
                     ProfileFrame.setAlamat(alamat);
                     ProfileFrame.setNohp(no_hp);
                     ProfileFrame.setJk(jeniskelamin);
@@ -253,6 +254,7 @@ public class Login extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+    
     }//GEN-LAST:event_LoginBtnActionPerformed
 
     
