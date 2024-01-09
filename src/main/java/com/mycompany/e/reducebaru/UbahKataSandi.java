@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
@@ -52,6 +52,8 @@ public class UbahKataSandi extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Ubah Kata Sandi");
+        setPreferredSize(new java.awt.Dimension(800, 500));
+        setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setPreferredSize(new java.awt.Dimension(800, 500));
@@ -178,9 +180,7 @@ public class UbahKataSandi extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,64 +191,65 @@ public class UbahKataSandi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SimpanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimpanBtnActionPerformed
-        String kataSandiLama = PwField1.getText();
-        String kataSandiBaru = PwField2.getText();
-        String konfirmasiKataSandi = PwField3.getText();
+String kataSandiLama = PwField1.getText();
+    String kataSandiBaru = PwField2.getText();
+    String konfirmasiKataSandi = PwField3.getText();
 
-        String SUrl, SUser, SPass;
+    String SUrl, SUser, SPass;
 
-        SUrl = "jdbc:MySQL://localhost:3306/java_users_db";
-        SUser = "root";
-        SPass = "";
+    SUrl = "jdbc:MySQL://localhost:3306/java_users_db";
+    SUser = "root";
+    SPass = "";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(SUrl, SUser, SPass);
-            
-            String query = "SELECT * FROM user WHERE email = ?";
-            try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
-                preparedStatement.setString(1, userEmail);
-                ResultSet rs = preparedStatement.executeQuery();
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        Connection con = DriverManager.getConnection(SUrl, SUser, SPass);
 
-                if (rs.next()) {
-                    String savedPassword = rs.getString("password");
+        String query = "SELECT * FROM user WHERE email = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+            preparedStatement.setString(1, userEmail);
+            ResultSet rs = preparedStatement.executeQuery();
 
-                    if (savedPassword.equals(kataSandiLama)) {
-                        if (kataSandiBaru.equals(konfirmasiKataSandi)) {
-                            String updateQuery = "UPDATE user SET password = ? WHERE email = ?";
-                            try (PreparedStatement updateStatement = con.prepareStatement(updateQuery)) {
-                                updateStatement.setString(1, kataSandiBaru);
-                                updateStatement.setString(2, userEmail);
+            if (rs.next()) {
+                String savedPassword = rs.getString("password");
 
-                                updateStatement.executeUpdate();
+                // Menggunakan BCrypt untuk memverifikasi password lama
+                if (BCrypt.checkpw(kataSandiLama, savedPassword)) {
+                    if (kataSandiBaru.equals(konfirmasiKataSandi)) {
+                        String hashedNewPassword = BCrypt.hashpw(kataSandiBaru, BCrypt.gensalt());
+                        String updateQuery = "UPDATE user SET password = ? WHERE email = ?";
+                        try (PreparedStatement updateStatement = con.prepareStatement(updateQuery)) {
+                            updateStatement.setString(1, hashedNewPassword);
+                            updateStatement.setString(2, userEmail);
 
-                                JOptionPane.showMessageDialog(this, "Kata sandi berhasil diperbarui!");
+                            updateStatement.executeUpdate();
 
-                                PwField1.setText("");
-                                PwField2.setText("");
-                                PwField3.setText("");
-                                
-                                Login LoginFrame = new Login();
-                                LoginFrame.setVisible(true);
-                                LoginFrame.pack();
-                                LoginFrame.setLocationRelativeTo(null);
-                                this.dispose();
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Kata sandi baru dan konfirmasi tidak cocok!");
+                            JOptionPane.showMessageDialog(this, "Kata sandi berhasil diperbarui!");
+
+                            PwField1.setText("");
+                            PwField2.setText("");
+                            PwField3.setText("");
+
+                            Login LoginFrame = new Login();
+                            LoginFrame.setVisible(true);
+                            LoginFrame.pack();
+                            LoginFrame.setLocationRelativeTo(null);
+                            this.dispose();
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Kata sandi lama salah!");
+                        JOptionPane.showMessageDialog(this, "Kata sandi baru dan konfirmasi tidak cocok!");
                     }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Pengguna tidak ditemukan!");
+                    JOptionPane.showMessageDialog(this, "Kata sandi lama salah!");
                 }
+            } else {
+                JOptionPane.showMessageDialog(this, "Pengguna tidak ditemukan!");
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memperbarui kata sandi!");
         }
-        
+    } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat memperbarui kata sandi!");
+    }       
     }//GEN-LAST:event_SimpanBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
