@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 public class SignUp extends javax.swing.JFrame {
@@ -193,49 +196,66 @@ public class SignUp extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SignUpBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpBtnActionPerformed
-//System.out.println("Sign Up btn Clicked");
-        String name,email,password,query;
-        String SUrl,SUser,SPass;
-          SUrl = "jdbc:MySQL://localhost:3306/java_users_db";
-          SUser = "root";
-          SPass = "";
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(SUrl,SUser,SPass);
-            Statement st = con.createStatement();
-             if("".equals(fname.getText())){
-                    JOptionPane.showMessageDialog(new JFrame(), "Nama Pengguna Harus Diisi", "Error ",
-                            JOptionPane.ERROR_MESSAGE);
-                }else if ("".equals(emailAddress.getText())){
-                    JOptionPane.showMessageDialog(new JFrame(), "Email Harus Diisi", "Error ",
-                            JOptionPane.ERROR_MESSAGE);
-                }else if("".equals(fpassword.getText())){
-                    JOptionPane.showMessageDialog(new JFrame(), "Kata Sandi Harus Diisi", "Error ",
-                            JOptionPane.ERROR_MESSAGE);
-                }else {
-                    name = fname.getText();
-                    email = emailAddress.getText();
-                    password = fpassword.getText();
-                    System.out.println(password );
-                    
-                    query = "INSERT INTO user(name,email,password)"+
-                            "VALUES ('" + name + "' ,'" + email + "','" + password + "')";
-                    
-                    st.execute(query);
-                    fname.setText("");
-                    emailAddress.setText("");
-                    fpassword.setText("");
-                    showMessageDialog(null,"Akun Telah Berhasil Dibuat!");
-                    Login LoginFrame = new Login();
-                    LoginFrame.setVisible(true);
-                    LoginFrame.pack();
-                    LoginFrame.setLocationRelativeTo(null);
-                    this.dispose();
-                }
-        }catch (Exception e){
-                System.out.println("Error" + e.getMessage());
-            
+String name, email, password, query;
+String SUrl, SUser, SPass;
+SUrl = "jdbc:MySQL://localhost:3306/java_users_db";
+SUser = "root";
+SPass = "";
+
+try {
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    Connection con = DriverManager.getConnection(SUrl, SUser, SPass);
+    Statement st = con.createStatement();
+
+    if ("".equals(fname.getText())) {
+        JOptionPane.showMessageDialog(new JFrame(), "Nama Pengguna Harus Diisi", "Error ",
+                JOptionPane.ERROR_MESSAGE);
+    } else if ("".equals(emailAddress.getText())) {
+        JOptionPane.showMessageDialog(new JFrame(), "Email Harus Diisi", "Error ",
+                JOptionPane.ERROR_MESSAGE);
+    } else if ("".equals(fpassword.getText())) {
+        JOptionPane.showMessageDialog(new JFrame(), "Kata Sandi Harus Diisi", "Error ",
+                JOptionPane.ERROR_MESSAGE);
+    } else {
+        name = fname.getText();
+        email = emailAddress.getText();
+        password = fpassword.getText();
+
+        // Validasi panjang password minimal 6 karakter
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(new JFrame(), "Kata Sandi Harus Minimal 6 Karakter", "Error ",
+                    JOptionPane.ERROR_MESSAGE);
+            return; // Keluar dari metode jika validasi gagal
         }
+
+        // Validasi email menggunakan DNS
+        Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
+        Matcher emailMatcher = emailPattern.matcher(email);
+        if (!emailMatcher.matches()) {
+            JOptionPane.showMessageDialog(new JFrame(), "Format Email Tidak Valid", "Error ",
+                    JOptionPane.ERROR_MESSAGE);
+            return; // Keluar dari metode jika validasi gagal
+        }
+
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        query = "INSERT INTO user(name,email,password)" +
+        "VALUES ('" + name + "' ,'" + email + "','" + hashedPassword + "')";
+
+        st.execute(query);
+        fname.setText("");
+        emailAddress.setText("");
+        fpassword.setText("");
+        showMessageDialog(null, "Akun Telah Berhasil Dibuat!");
+        Login LoginFrame = new Login();
+        LoginFrame.setVisible(true);
+        LoginFrame.pack();
+        LoginFrame.setLocationRelativeTo(null);
+        this.dispose();
+    }
+} catch (Exception e) {
+    System.out.println("Error" + e.getMessage());
+}
         
     }//GEN-LAST:event_SignUpBtnActionPerformed
     
