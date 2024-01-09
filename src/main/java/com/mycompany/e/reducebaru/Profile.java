@@ -112,7 +112,6 @@ private String userEmail;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Halaman Profile");
-        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -201,7 +200,7 @@ private String userEmail;
         labelAlamat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelAlamat.setText("Alamat               :");
 
-        txtAlamat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtAlamat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtAlamat.setText("Tidak Ada data");
 
         labelNohp.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -246,7 +245,7 @@ private String userEmail;
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
